@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSS DEMO</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body onkeydown="checkKey(event);">
+    <div class="calculator">
+        <div class="screen">
+            <p class="text">ON</p>
+        </div>
+        <div class="container-grid">
+            <div class="items smallText" id="btnCalculator" onclick="compute('OFF');">OFF</div>
+            <div class="items" onclick="compute('CLEAR');">C</div>
+            <div class="items" onclick="compute('BACK');">&larr;</div>
+            <div class="items" onclick="computeFunc('pow');">X<sup>2</sup></div>
+            <div class="items" onclick="computeFunc('sqrt');">&radic;x</div>
+            <div class="items smallText" onclick="computeFunc('sin');">SIN</div>
+            <div class="items smallText" onclick="computeFunc('cos');">COS</div>
+            <div class="items smallText" onclick="computeFunc('tan');">TAN</div>
+            <div class="items" onclick="compute(7);">7</div>
+            <div class="items" onclick="compute(8);">8</div>
+            <div class="items" onclick="compute(9);">9</div>
+            <div class="items" onclick="compute('/');">/</div>
+            <div class="items" onclick="compute(4);">4</div>
+            <div class="items" onclick="compute(5);">5</div>
+            <div class="items" onclick="compute(6);">6</div>
+            <div class="items" onclick="compute('*');">*</div>
+            <div class="items" onclick="compute(1);">1</div>
+            <div class="items" onclick="compute(2);">2</div>
+            <div class="items" onclick="compute(3);">3</div>
+            <div class="items" onclick="compute('-');">-</div>
+            <div class="items" onclick="compute(0);">0</div>
+            <div class="items" onclick="compute('.');">.</div>
+            <div class="items" onclick="getResult('=');">=</div>
+            <div class="items" onclick="compute('+');">+</div>
+        </div>
+    </div>
+    <script>
+        let screen = document.getElementsByClassName("text")[0];
+        let btn = document.getElementById("btnCalculator");
+        function getResult()
+        {
+            if(Number.isInteger(parseInt(screen.innerHTML))){
+                if(Number.isInteger(parseInt(screen.innerHTML.slice(-1))) === true){
+                    screen.innerHTML = eval(screen.innerHTML);
+                }
+            }
+        }
+        function computeFunc(id){
+            if(Number.isInteger(parseInt(screen.innerHTML))){
+               let num = parseFloat(screen.innerHTML);
+               if(id === "pow"){
+                screen.innerHTML = num * num;
+               }else if(id === "sqrt"){
+                screen.innerHTML = Math.sqrt(num);
+               }else if(id === "sin"){
+                screen.innerHTML = Math.sin(num);
+               }else if(id === "cos"){
+                screen.innerHTML = Math.cos(num);
+               }else if(id === "tan"){
+                screen.innerHTML = Math.tan(num);
+               }
+            }
+        }
+        function compute(digit){
+            if(screen.innerHTML === "ON"){
+                if(Number.isInteger(parseInt(digit)) || digit === "OFF"){
+                    screen.innerHTML = digit;
+                    btn.innerHTML = "ON";
+                    btn.style.backgroundColor = "green";
+                }
+            }else if(digit === "OFF"){
+                if(screen.innerHTML === "OFF"){
+                    screen.innerHTML = "ON";
+                    btn.innerHTML = "OFF";
+                    btn.style.backgroundColor = "red";
+                }else{
+                    screen.innerHTML = "OFF";
+                    btn.innerHTML = "ON";
+                    btn.style.backgroundColor = "green";
+                }
+            }else if(digit === "CLEAR"){
+                if(screen.innerHTML != "OFF"){
+                    screen.innerHTML = "ON";
+                }
+            }else if(digit === "BACK"){
+                if(screen.innerHTML != "OFF"){
+                    if(screen.innerHTML.length > 1)
+                        screen.innerHTML = screen.innerHTML.slice(0,-1);
+                    else
+                        screen.innerHTML = "ON";
+                }
+            }else{
+                if(screen.innerHTML != "OFF"){
+                    if(screen.innerHTML.length <= 20){
+                        switch(digit){
+                            case '+':{
+
+                            }
+                            case '-':{
+
+                            }
+                            case '/':{
+
+                            }
+                            case '*':{
+                                if(Number.isInteger(parseInt(screen.innerHTML.slice(-1))) === false){
+                                    screen.innerHTML = screen.innerHTML.slice(0,-1)+digit;
+                                    break;
+                                }
+                            }
+                            default:{
+                                screen.innerHTML += digit;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function checkKey(event){
+            event.preventDefault();
+            switch(event.key){
+                case '%':{
+                    compute('%');
+                    break;
+                }
+                case '0':{
+                    compute(0);
+                    break;
+                }
+                case '1':{
+                    compute(1);
+                    break;
+                }
+                case '2':{
+                    compute(2);
+                    break;
+                }
+                case '3':{
+                    compute(3);
+                    break;
+                }
+                case '4':{
+                    compute(4);
+                    break;
+                }
+                case '5':{
+                    compute(5);
+                    break;
+                }
+                case '6':{
+                    compute(6);
+                    break;
+                }
+                case '7':{
+                    compute(7);
+                    break;
+                }
+                case '8':{
+                    compute(8);
+                    break;
+                }
+                case '0':{
+                    compute(0);
+                    break;
+                }
+                case '9':{
+                    compute(9);
+                    break;
+                }
+                case '.':{
+                    compute('.');
+                    break;
+                }
+                case '+':{
+                    compute('+');
+                    break;
+                }
+                case '-':{
+                    compute('-');
+                    break;
+                }
+                case '*':{
+                    compute('*');
+                    break;
+                }
+                case '/':{
+                    compute('/');
+                    break;
+                }
+                case '=':{
+                    getResult('=');
+                    break;
+                }
+                case 'Enter':{
+                    getResult('=');
+                    break;
+                }
+                case 'Backspace':{
+                    compute('BACK');
+                    break;
+                }
+                case 'Tab':{
+                    if(Number.isInteger(parseInt(screen.innerHTML)) === false){
+                        if(screen.innerHTML === "ON"){
+                            screen.innerHTML = "OFF";
+                            btn.innerHTML = "ON";
+                            btn.style.backgroundColor = "green";
+                        }else{
+                            screen.innerHTML = "ON";
+                            btn.innerHTML = "OFF";
+                            btn.style.backgroundColor = "red";
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
